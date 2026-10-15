@@ -1,0 +1,23 @@
+# Build output
+bin/
+obj/
+release/
+artifacts/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local game/mod-manager files
+BepInEx/
+*.log
+
+# Do not commit game/mod binaries used only as build references
+assembly_valheim.dll
+UnityEngine*.dll
+BepInEx.dll
+0Harmony.dll
+PathOfValheiman*.dll
+LetMeTameYou*.dll
