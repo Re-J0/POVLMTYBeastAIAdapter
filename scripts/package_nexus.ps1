@@ -23,6 +23,7 @@ New-Item -ItemType Directory -Path (Join-Path $Stage "BepInEx/plugins/POVLMTYBea
 
 Copy-Item $DllPath (Join-Path $Stage "BepInEx/plugins/POVLMTYBeastAIAdapter/POVLMTYBeastAIAdapter.dll")
 Copy-Item (Join-Path $RepoRoot "README.md") (Join-Path $Stage "README.md")
+Copy-Item (Join-Path $RepoRoot "LICENSE") (Join-Path $Stage "LICENSE")
 
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
 Compress-Archive -Path (Join-Path $Stage "*") -DestinationPath $ZipPath -CompressionLevel Optimal
