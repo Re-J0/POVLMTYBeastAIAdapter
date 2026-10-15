@@ -25,10 +25,11 @@ Copy-Item (Join-Path $RepoRoot "distribution/thunderstore/manifest.json") $Stage
 Copy-Item (Join-Path $RepoRoot "distribution/thunderstore/README.md") $Stage
 Copy-Item (Join-Path $RepoRoot "distribution/thunderstore/CHANGELOG.md") $Stage
 Copy-Item (Join-Path $RepoRoot "distribution/thunderstore/icon.png") $Stage
+Copy-Item (Join-Path $RepoRoot "LICENSE") $Stage
 Copy-Item $DllPath (Join-Path $Stage "plugins/POVLMTYBeastAIAdapter/POVLMTYBeastAIAdapter.dll")
 
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
 Compress-Archive -Path (Join-Path $Stage "*") -DestinationPath $ZipPath -CompressionLevel Optimal
 
 Write-Host "Created: $ZipPath"
-Write-Host "Verify ZIP root contains manifest.json, README.md, icon.png, CHANGELOG.md, and plugins/."
+Write-Host "Verify ZIP root contains manifest.json, README.md, icon.png, CHANGELOG.md, LICENSE, and plugins/."
