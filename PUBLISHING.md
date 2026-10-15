@@ -8,17 +8,18 @@ This repository includes source and packaging helpers for GitHub, Thunderstore/G
 - Build `POVLMTYBeastAIAdapter.dll` from the exact source/tag you are publishing.
 - Do **not** bundle PathOfValheiman, LetMeTameYou, Valheim game assemblies, or BepInEx binaries.
 - Keep the version in `Plugin.cs`, Thunderstore `manifest.json`, release tag, and uploaded file name synchronized.
+- The project uses the custom source-available terms in `LICENSE`: private modification is allowed, redistribution is not allowed without written permission from Re-J0.
 - Review third-party mod licenses/permissions before publishing compatibility work that interacts with them.
 
 ## 2. GitHub
 
-Recommended repository name:
+Repository:
 
 ```text
-POVLMTYBeastAIAdapter
+https://github.com/Re-J0/POVLMTYBeastAIAdapter
 ```
 
-Recommended first release/tag:
+First release/tag:
 
 ```text
 v0.3.1
@@ -51,7 +52,9 @@ plugins/
     POVLMTYBeastAIAdapter.dll
 ```
 
-The `manifest.json` template in `distribution/thunderstore/` pins the versions that were used for final validation:
+The repository icon has been converted and verified as a 256x256 RGBA PNG. The same file is stored at `icon.png` and `distribution/thunderstore/icon.png`.
+
+The `manifest.json` template in `distribution/thunderstore/` pins the versions used for final validation:
 
 ```text
 denikson-BepInExPack_Valheim-5.4.2351
@@ -69,13 +72,20 @@ After packaging, open the ZIP and verify that `manifest.json`, `README.md`, `ico
 
 ### Thunderstore category disclosure
 
-Thunderstore currently instructs authors to select the **AI Generated** category if a significant portion of the mod was created using AI tools. This project was substantially developed with AI assistance, so select that category during upload.
+Thunderstore instructs authors to select the **AI Generated** category when a significant portion of a mod was created using AI tools. This project was substantially developed with AI assistance and then validated through runtime testing, so select that category during upload.
 
-Also choose the normal Valheim category/categories that best describe the package (for example a utility/compatibility category available in the uploader).
+Also choose the normal Valheim category/categories that best describe the package, such as `Utility`/`Mods` if those are available in the uploader.
 
 ## 4. Nexus Mods
 
-Run:
+**Permission gate:** do not publish the Nexus page until permission has been obtained from the relevant upstream mod authors. Nexus's current file submission guidelines state that user-submitted content predominantly intended to interact with existing user-submitted content is subject to approval of the involved parties. This adapter exists specifically to interoperate with PathOfValheiman and LetMeTameYou.
+
+Keep written permission (for example a Discord/DM message or other durable record) from:
+
+- treextr — PathOfValheiman
+- Meldurson — LetMeTameYou
+
+Once permission is obtained, run:
 
 ```powershell
 ./scripts/package_nexus.ps1
@@ -95,8 +105,8 @@ On the Nexus mod page:
 - required mods/resources: BepInExPack Valheim, PathOfValheiman, LetMeTameYou
 - do not upload copies of those dependencies inside your archive
 - use `NEXUS_DESCRIPTION.md` as the page description
-
-The dependency/credit section matters because this adapter exists specifically to interoperate with two third-party mods.
+- disclose the substantial AI-assisted development accurately in the applicable tag/category/description fields
+- set redistribution permissions consistently with this repository's `LICENSE`
 
 ## 5. Version updates
 
