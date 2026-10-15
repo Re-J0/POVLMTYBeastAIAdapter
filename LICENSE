@@ -1,0 +1,24 @@
+POV LMTY BeastAI Adapter Source-Available License v1.0
+
+Copyright (c) 2026 Re-J0
+
+To the extent copyright or similar rights subsist in this project, permission is granted to any person obtaining a copy of this software and associated source code (the "Software") to:
+
+1. use the Software for personal or server use;
+2. inspect, study, and modify the Software for private use; and
+3. create GitHub forks and submit pull requests to the official repository solely for the purpose of proposing changes to this project.
+
+The following are NOT permitted without prior written permission from the project maintainer:
+
+1. redistribution of the Software, in source or binary form, whether modified or unmodified;
+2. publishing compiled DLLs, modified builds, forks, mirrors, repacks, or derivative releases on GitHub Releases, Thunderstore, Gale, r2modman repositories, Nexus Mods, other mod-hosting services, file-sharing services, or any other distribution channel;
+3. bundling or redistributing the Software as part of another mod pack, installer, archive, or software package when that bundle itself republishes the Software; or
+4. selling, sublicensing, or otherwise commercially redistributing the Software.
+
+For clarity, downloading the official release from an authorized distribution page for your own use is permitted. Keeping private backups of copies you lawfully obtained is permitted. A GitHub fork created only to prepare and submit changes back to the official repository is also permitted, provided it is not promoted or used as an independent distribution channel.
+
+If you want to redistribute, mirror, include, or publish this project or a modified version, you must first obtain explicit written permission from Re-J0.
+
+This license does not grant rights to PathOfValheiman, LetMeTameYou, Valheim, BepInEx, or any other third-party software, names, assets, or trademarks. Those remain subject to their respective owners' terms.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR PROJECT MAINTAINER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
