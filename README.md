@@ -4,7 +4,7 @@ A compatibility layer for **PathOfValheiman (POV)** and **LetMeTameYou (LMTY)** 
 
 The adapter fixes a specific interoperability problem where POV converts some normally passive `AnimalAI` creatures into its custom `PassiveTree.BeastAI`, while LMTY expects a different component layout when adding taming and breeding support.
 
-**Current package release: 0.3.2** — branding/icon update only. Gameplay and compatibility logic are unchanged from the validated **0.3.1** runtime build.
+**Current stable version: 0.3.3**
 
 ## What problem does this solve?
 
@@ -23,7 +23,7 @@ LMTY sees `MonsterAI` and therefore does not take its normal `AnimalAI` conversi
 
 This adapter does **not** replace POV's AI. Instead, it intercepts only the confirmed incompatible structure and applies the LMTY creature settings directly.
 
-## Generic auto-repair in 0.3.1
+## Generic auto-repair in 0.3.x
 
 There is no prefab-name allowlist.
 
@@ -66,6 +66,12 @@ After a successful meal it observes the native `TameTimeLeft` for six seconds of
 
 This was added because POV `BeastAI` creatures could eat successfully while the native taming countdown remained frozen.
 
+### v0.3.3 fed-state timer initialization fix
+
+During Gale/Thunderstore package validation, a second failure mode was reproduced: a repaired creature could already be fed (`hungry=False`) while `TameTimeLeft` was still absent (`-1`). Earlier builds returned at that point, so the native-observation window and fallback never started.
+
+v0.3.3 repairs that state only when a real `TameLastFeeding` timestamp exists. It initializes the missing countdown from the configured taming time, then runs the same six-second native-progress observation before deciding whether fallback is needed. Never-fed creatures are not initialized.
+
 ## Performance
 
 An earlier development build scanned all `ItemDrop` objects every ~0.35 seconds per compatible creature and caused noticeable periodic hitches.
@@ -101,7 +107,7 @@ Validated behavior includes:
 | Hatchling / Drake | Not auto-repaired; passed through to original LMTY; taming, breeding and egg laying observed |
 | High-star Hatchling | 3-star Hatchling successfully tamed in live testing |
 
-No `NullReferenceException`, general `Exception`, or `[Error` entry was present in the final 0.3.1 validation log.
+Final v0.3.3 validation confirmed the missing-timer repair on a live 4-star Deer: `TameTimeLeft` was initialized from 120 seconds, fallback activated only after the six-second native-progress check, the timer reached 0, and taming completed with `tamed=True`. No `NullReferenceException`, general `Exception`, or `[Error` entry was present in that validation log.
 
 ## Special egg path limitation
 
