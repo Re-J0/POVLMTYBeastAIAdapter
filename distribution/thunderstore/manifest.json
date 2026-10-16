@@ -1,6 +1,6 @@
 {
   "name": "POV_LMTY_BeastAI_Adapter",
-  "version_number": "0.3.2",
+  "version_number": "0.3.3",
   "website_url": "https://github.com/Re-J0/POVLMTYBeastAIAdapter",
   "description": "Compatibility layer for PathOfValheiman and LetMeTameYou that auto-repairs POV BeastAI taming/breeding conflicts without replacing POV AI.",
   "dependencies": [
