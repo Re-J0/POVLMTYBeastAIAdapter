@@ -1,14 +1,9 @@
 # License notice
 
-This project is published under the custom **POV LMTY BeastAI Adapter Source-Available License v1.0** in [`LICENSE`](LICENSE).
+This project is licensed under the **MIT License**. See [`LICENSE`](LICENSE).
 
-In practical terms:
+In practical terms, you may use, copy, modify, merge, publish, redistribute, sublicense, and sell copies of this adapter, including modified versions, provided that the copyright notice and MIT permission notice are preserved in copies or substantial portions of the software.
 
-- you may use the mod;
-- you may inspect, study, and privately modify the source;
-- you may fork the repository only for proposing changes back to the official project;
-- you may **not redistribute** the original or modified source/binaries, publish independent builds/forks/mirrors, or include the adapter in another distributed package without prior written permission from Re-J0.
+This license applies only to the code and files in this repository that are owned by this project. It does **not** grant rights to Valheim, PathOfValheiman, LetMeTameYou, BepInEx, or any other third-party software, assets, names, or trademarks. Those remain subject to their respective owners' licenses and terms.
 
-This is a source-available license, not an OSI-approved open-source license.
-
-The repository does not grant any rights to Valheim, PathOfValheiman, LetMeTameYou, BepInEx, or other third-party projects. Their code, assets, names, and binaries remain subject to their respective owners' terms.
+This repository does not redistribute third-party binaries from Valheim, PathOfValheiman, LetMeTameYou, or BepInEx.
