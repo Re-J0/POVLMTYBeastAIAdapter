@@ -58,3 +58,9 @@ Dedicated-server and broad multiplayer combinations are not yet exhaustively val
 ## Credits
 
 PathOfValheiman by treextr. LetMeTameYou by Meldurson. This download contains only the compatibility adapter and does not redistribute either mod or Valheim game files.
+
+## Version 0.3.3
+
+Fixes a fed-state taming deadlock where a repaired POV BeastAI creature could be `hungry=False` while `TameTimeLeft` was still missing. The adapter now initializes the missing countdown only when a valid `TameLastFeeding` timestamp exists, then preserves the existing six-second native-progress observation before enabling fallback.
+
+Live validation completed taming of a 4-star Deer from a repaired 120-second countdown to `tamed=True` with no `NullReferenceException`, general `Exception`, or `[Error` entry in the final log.
