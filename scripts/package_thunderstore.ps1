@@ -5,7 +5,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$Version = "0.3.2"
+$Version = "0.3.3"
 
 if ([string]::IsNullOrWhiteSpace($DllPath)) {
     $DllPath = Join-Path $RepoRoot "bin/$Configuration/netstandard2.1/POVLMTYBeastAIAdapter.dll"
