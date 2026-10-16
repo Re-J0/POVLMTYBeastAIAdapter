@@ -1,8 +1,14 @@
 # Changelog
 
+## 0.3.2 - Branding/icon update
+
+- Replaced the project and Thunderstore package icon with a new custom emblem representing Deer/BeastAI compatibility and Hatchling/Drake support.
+- Bumped the Thunderstore package version to 0.3.2 so the new icon can be published as a new package version.
+- No gameplay, taming, breeding, AI, or compatibility logic changes from 0.3.1.
+
 ## 0.3.1 - Generic compatibility + adaptive taming fallback
 
-Current stable release.
+Previous stable gameplay release.
 
 - Removed prefab-name dependency from the compatibility decision.
 - Retained high-confidence POV structural detection introduced in 0.3.0.
