@@ -8,7 +8,7 @@ This repository includes source and packaging helpers for GitHub, Thunderstore/G
 - Build `POVLMTYBeastAIAdapter.dll` from the exact source/tag you are publishing.
 - Do **not** bundle PathOfValheiman, LetMeTameYou, Valheim game assemblies, or BepInEx binaries.
 - Keep the version in `Plugin.cs`, Thunderstore `manifest.json`, release tag, and uploaded file name synchronized.
-- The project uses the custom source-available terms in `LICENSE`: private modification is allowed, redistribution is not allowed without written permission from Re-J0.
+- This project is licensed under the **MIT License**. Redistribution and modified redistribution are allowed as long as the MIT copyright and permission notice are preserved.
 - Review third-party mod licenses/permissions before publishing compatibility work that interacts with them.
 
 ## 2. GitHub
@@ -47,12 +47,13 @@ manifest.json
 README.md
 icon.png            # exactly 256x256 PNG
 CHANGELOG.md         # optional but included here
+LICENSE
 plugins/
   POVLMTYBeastAIAdapter/
     POVLMTYBeastAIAdapter.dll
 ```
 
-The repository icon has been converted and verified as a 256x256 RGBA PNG. The same file is stored at `icon.png` and `distribution/thunderstore/icon.png`.
+The repository icon is stored at both `icon.png` and `distribution/thunderstore/icon.png`.
 
 The `manifest.json` template in `distribution/thunderstore/` pins the versions used for final validation:
 
@@ -68,24 +69,21 @@ Run:
 ./scripts/package_thunderstore.ps1
 ```
 
-After packaging, open the ZIP and verify that `manifest.json`, `README.md`, `icon.png` and `plugins/` are directly at the ZIP root, not inside another containing folder.
+After packaging, open the ZIP and verify that `manifest.json`, `README.md`, `icon.png`, `CHANGELOG.md`, `LICENSE`, and `plugins/` are directly at the ZIP root, not inside another containing folder.
 
 ### Thunderstore category disclosure
 
-Thunderstore instructs authors to select the **AI Generated** category when a significant portion of a mod was created using AI tools. This project was substantially developed with AI assistance and then validated through runtime testing, so select that category during upload.
+If the Thunderstore uploader provides an **AI Generated** category for substantially AI-assisted projects, select it for this project. The implementation was developed with substantial AI assistance and then validated through repeated runtime testing.
 
-Also choose the normal Valheim category/categories that best describe the package, such as `Utility`/`Mods` if those are available in the uploader.
+Also choose the normal Valheim category/categories that best describe the package, such as utility/mod/compatibility categories if available.
 
 ## 4. Nexus Mods
 
-**Permission gate:** do not publish the Nexus page until permission has been obtained from the relevant upstream mod authors. Nexus's current file submission guidelines state that user-submitted content predominantly intended to interact with existing user-submitted content is subject to approval of the involved parties. This adapter exists specifically to interoperate with PathOfValheiman and LetMeTameYou.
+Before publishing, review the current Nexus submission rules and the upstream projects' license/permission terms. This adapter exists specifically to interoperate with PathOfValheiman and LetMeTameYou, so keep clear credits and dependency links for both projects.
 
-Keep written permission (for example a Discord/DM message or other durable record) from:
+If Nexus or an upstream author requires explicit approval for this compatibility release, obtain and retain written permission before publishing there.
 
-- treextr — PathOfValheiman
-- Meldurson — LetMeTameYou
-
-Once permission is obtained, run:
+Once ready, run:
 
 ```powershell
 ./scripts/package_nexus.ps1
@@ -96,6 +94,7 @@ The produced archive contains:
 ```text
 BepInEx/plugins/POVLMTYBeastAIAdapter/POVLMTYBeastAIAdapter.dll
 README.md
+LICENSE
 ```
 
 On the Nexus mod page:
@@ -105,8 +104,8 @@ On the Nexus mod page:
 - required mods/resources: BepInExPack Valheim, PathOfValheiman, LetMeTameYou
 - do not upload copies of those dependencies inside your archive
 - use `NEXUS_DESCRIPTION.md` as the page description
-- disclose the substantial AI-assisted development accurately in the applicable tag/category/description fields
-- set redistribution permissions consistently with this repository's `LICENSE`
+- disclose the substantial AI-assisted development accurately if the uploader provides an applicable field/tag
+- set redistribution permissions consistently with the MIT License
 
 ## 5. Version updates
 
