@@ -15,7 +15,7 @@ namespace POVLMTYBeastAIAdapter
     {
         public const string PluginGuid = "com.rehyun.povlmtybeastaiadapter";
         public const string PluginName = "POV LMTY BeastAI Adapter";
-        public const string PluginVersion = "0.3.1";
+        public const string PluginVersion = "0.3.3";
 
         internal static ManualLogSource Log;
         private Harmony _harmony;
@@ -33,7 +33,7 @@ namespace POVLMTYBeastAIAdapter
             }
 
             _harmony.Patch(addTame, prefix: new HarmonyMethod(typeof(AdapterPatch), nameof(AdapterPatch.Prefix)));
-            Logger.LogInfo("POV LMTY BeastAI Adapter 0.3.1 loaded. Generic compatibility + adaptive taming fallback enabled; no prefab allowlist.");
+            Logger.LogInfo("POV LMTY BeastAI Adapter 0.3.3 loaded. Generic compatibility + adaptive taming fallback enabled; no prefab allowlist.");
         }
 
         private void OnDestroy()
@@ -117,7 +117,7 @@ namespace POVLMTYBeastAIAdapter
                     $"[Generic Compatibility] AUTO-REPAIR triggered: prefab={prefabName}; AI={aiType}; " +
                     $"shape=MonsterAI+Character/no-Humanoid/no-AnimalAI; POV={povEvidence}");
 
-                // Egg-based reproduction is a special LMTY path. v0.3.1 intentionally
+                // Egg-based reproduction is a special LMTY path. v0.3.x intentionally
                 // does not emulate that path yet; leave it to original LMTY and emit a
                 // precise diagnostic rather than silently converting an egg-layer into
                 // a SpawnMini creature.
@@ -126,7 +126,7 @@ namespace POVLMTYBeastAIAdapter
                 {
                     Plugin.Log.LogWarning(
                         $"[Generic Compatibility] prefab={prefabName} has special egg config ({eggConfig}). " +
-                        "v0.3.1 will not auto-repair this special reproduction path; original LMTY will handle it.");
+                        "v0.3.x will not auto-repair this special reproduction path; original LMTY will handle it.");
                     return true;
                 }
 
@@ -153,7 +153,7 @@ namespace POVLMTYBeastAIAdapter
                     $"[Generic Compatibility] SUCCESS: LMTY creature settings applied without replacing POV {aiType}. " +
                     $"Tameable={(go.GetComponent<Tameable>() != null)}; " +
                     $"Procreation={(finalProc != null)}; " +
-                    $"offspring={(finalProc != null && finalProc.m_offspring != null ? finalProc.m_offspring.name : "<none>")}");
+                    $"offspring={(finalProc != null && finalProc.m_offspring != null ? finalProc.m_offspring.name : "<none>" )}");
 
                 return false;
             }
@@ -211,7 +211,6 @@ namespace POVLMTYBeastAIAdapter
                 return;
             }
 
-            // Accept the common separators used by LMTY/AllTameable-style configs.
             char[] separators = new char[] { ',', ':', ';' };
             string[] tokens = foods.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
@@ -308,9 +307,6 @@ namespace POVLMTYBeastAIAdapter
                 return;
             }
 
-            // LMTY supports explicit offspringPrefab (for example Seal -> Seal_Pup).
-            // Prefer that exact prefab when the config supplies one instead of forcing
-            // every generic repair through SpawnMini.
             object explicitOffspringValue = GetMember(tb, "offspringPrefab");
             GameObject explicitPrefab = explicitOffspringValue as GameObject;
             string explicitOffspring = explicitPrefab != null
@@ -384,9 +380,6 @@ namespace POVLMTYBeastAIAdapter
             if (value == null)
                 return false;
 
-            // Be conservative: only interpret representations whose "empty" state we
-            // can identify reliably. Do not treat an arbitrary object's type name as
-            // an active egg config.
             string text;
             Type valueType = value.GetType();
 
@@ -436,8 +429,6 @@ namespace POVLMTYBeastAIAdapter
                 return true;
             }
 
-            // Fallback for future POV builds that may rename the concrete BeastAI type
-            // while keeping it in the PathOfValheiman assembly.
             string assemblyName = runtimeType.Assembly != null
                 ? (runtimeType.Assembly.GetName().Name ?? "")
                 : "";
@@ -515,12 +506,6 @@ namespace POVLMTYBeastAIAdapter
         }
     }
 
-    // Runtime fallback for POV's PassiveTree.BeastAI.
-    // POV Deer/Hare retain MonsterAI consume configuration but do not execute
-    // the normal Humanoid-based vanilla consume path. This component restores
-    // the minimum vanilla feeding semantics: locate configured ground food,
-    // consume one item when in consume range, fire m_onConsumedItem, and reset
-    // Tameable's feeding timer so normal taming can progress.
     internal sealed class BeastAIConsumeBridge : MonoBehaviour
     {
         private MonsterAI _ai;
@@ -607,8 +592,6 @@ namespace POVLMTYBeastAIAdapter
                 return;
             }
 
-            // Hungry means taming is paused. Reset the adaptive-progress detector;
-            // Consume() will seed a fresh baseline as soon as the creature eats.
             _progressTickTimer = 0f;
             _lastObservedTimeLeft = -1f;
             _nativeObservationElapsed = 0f;
@@ -616,9 +599,6 @@ namespace POVLMTYBeastAIAdapter
             _fallbackActivated = false;
             _observationLogged = false;
 
-            // Do not rescan the whole Unity scene every 0.35 s.
-            // Keep a cached target and only scan ground ItemDrops at the
-            // creature's configured consumeSearchInterval.
             if (!IsValidTarget(_targetFood))
             {
                 _targetFood = null;
@@ -712,10 +692,47 @@ namespace POVLMTYBeastAIAdapter
 
             float before = zdo.GetFloat("TameTimeLeft", -1f);
             if (before < 0f)
-                return;
+            {
+                // v0.3.3: another taming/feed patch can legitimately mark the creature
+                // as fed (IsHungry() == false) before this bridge consumes the ground
+                // item itself. In that case TameLastFeeding exists, but TameTimeLeft
+                // may still be absent. v0.3.1 returned here forever, so neither the
+                // native-observation window nor the fallback could ever start.
+                //
+                // Only seed the countdown when a real feeding timestamp exists. This
+                // prevents a freshly spawned, never-fed creature from starting taming
+                // merely because another mod temporarily reports it as not hungry.
+                long lastFeeding = zdo.GetLong("TameLastFeeding", 0L);
+                if (lastFeeding <= 0L)
+                {
+                    if (Time.time >= _nextDiagnostic)
+                    {
+                        _nextDiagnostic = Time.time + 3f;
+                        Plugin.Log.LogWarning(
+                            "[Adaptive Taming] Fed-state has no TameTimeLeft and no TameLastFeeding; " +
+                            "countdown not initialized: prefab=" + CleanName(gameObject.name)
+                        );
+                    }
+                    return;
+                }
 
-            // Preserve vanilla rule: taming pauses while alerted. Alert time does not
-            // count toward the native-observation window.
+                before = Mathf.Max(0f, _tameable.m_tamingTime);
+                zdo.Set("TameTimeLeft", before);
+
+                _lastObservedTimeLeft = before;
+                _nativeObservationElapsed = 0f;
+                _nativeProgressConfirmed = false;
+                _fallbackActivated = false;
+                _observationLogged = false;
+
+                Plugin.Log.LogWarning(
+                    "[Adaptive Taming] Fed creature had no TameTimeLeft; initialized countdown: prefab=" +
+                    CleanName(gameObject.name) +
+                    "; TameTimeLeft=" + before.ToString("0.0") +
+                    "; TameLastFeeding=" + lastFeeding
+                );
+            }
+
             if (alerted)
             {
                 if (Time.time >= _nextDiagnostic)
@@ -730,9 +747,6 @@ namespace POVLMTYBeastAIAdapter
                 return;
             }
 
-            // v0.3.1 adaptive mode: first give Valheim/LMTY a chance to advance the
-            // timer natively. If we observe even one real decrease, the fallback stays
-            // out of the way for this feeding cycle.
             if (_lastObservedTimeLeft >= 0f && before < _lastObservedTimeLeft - 0.01f)
             {
                 if (!_nativeProgressConfirmed)
@@ -923,18 +937,12 @@ namespace POVLMTYBeastAIAdapter
                 if (drop == null)
                     return;
 
-                // RemoveOne requests ownership if necessary; only report a feed once
-                // the world item was actually decremented/destroyed.
                 if (!drop.RemoveOne())
                     return;
 
                 if (_ai.m_onConsumedItem != null)
                     _ai.m_onConsumedItem.Invoke(null);
 
-                // Valheim 1.0.20 no longer exposes Tameable.ResetFeedingTimer().
-                // Reproduce the vanilla feeding state through the creature ZDO:
-                // - TameLastFeeding controls IsHungry()
-                // - TameTimeLeft is the remaining taming duration.
                 if (_nview != null && _nview.IsValid())
                 {
                     ZDO zdo = _nview.GetZDO();
@@ -946,9 +954,6 @@ namespace POVLMTYBeastAIAdapter
 
                         zdo.Set("TameLastFeeding", nowTicks);
 
-                        // Critical: never reset an existing taming countdown when the
-                        // animal eats again. In v0.2.4 every meal wrote m_tamingTime back
-                        // into TameTimeLeft, so a deer could remain "acclimatizing" forever.
                         float timeLeft = zdo.GetFloat("TameTimeLeft", -1f);
                         bool initializedTimeLeft = false;
 
@@ -959,8 +964,6 @@ namespace POVLMTYBeastAIAdapter
                             initializedTimeLeft = true;
                         }
 
-                        // Start a fresh native-progress observation window from the
-                        // exact value present immediately after this meal.
                         _lastObservedTimeLeft = timeLeft;
                         _nativeObservationElapsed = 0f;
                         _nativeProgressConfirmed = false;
@@ -1000,7 +1003,6 @@ namespace POVLMTYBeastAIAdapter
             }
             catch
             {
-                // Movement is best-effort only. Direct proximity feeding remains active.
             }
         }
 
@@ -1018,7 +1020,5 @@ namespace POVLMTYBeastAIAdapter
 
             return cut >= 0 ? name.Substring(0, cut) : name;
         }
-
-}
-
+    }
 }
