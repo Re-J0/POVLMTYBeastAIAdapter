@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-echo [START] POV LMTY BeastAI Adapter v0.3.1 build/install script started.
+echo [START] POV LMTY BeastAI Adapter v0.3.3 build/install script started.
 
 cd /d "%~dp0"
 set "VALHEIM=C:\Program Files (x86)\Steam\steamapps\common\Valheim"
@@ -55,10 +55,10 @@ echo   Normal LMTY creatures pass through untouched.
 echo   Unknown custom-AI shapes are logged but not modified.
 echo.
 echo NOTE:
-echo   v0.3.1 intentionally leaves special egg-config auto-repair to original LMTY.
+echo   v0.3.3 intentionally leaves special egg-config auto-repair to original LMTY.
 echo   Standard mini-offspring and explicit offspringPrefab are supported.
 echo.
-echo For v0.3.1, only one fresh untamed Deer/Hare/Seal test is needed.
+echo For v0.3.3, a fresh untamed POV BeastAI creature is sufficient for a focused taming test.
 echo Send the new LogOutput.log after that focused test.
 echo.
 pause

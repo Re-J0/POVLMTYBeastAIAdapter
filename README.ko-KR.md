@@ -2,7 +2,7 @@
 
 **PathOfValheiman(POV)** 과 **LetMeTameYou(LMTY)** 를 함께 사용할 때 발생하는 길들이기/번식 호환 문제를 해결하는 Valheim용 BepInEx 어댑터입니다.
 
-**현재 패키지 릴리즈: 0.3.2** — 이번 버전은 아이콘/브랜딩 업데이트만 포함하며, 게임 로직과 호환성 동작은 검증된 **0.3.1 런타임 빌드와 동일**합니다.
+**현재 안정 버전: 0.3.3**
 
 ## 왜 필요한가?
 
@@ -21,7 +21,7 @@ LMTY는 `MonsterAI`가 이미 존재하므로 원래 `AnimalAI` 변환 경로를
 
 이 모드는 POV의 AI를 교체하지 않습니다. 대신 **실제로 문제가 확인된 컴포넌트 구조만 자동 감지**해서 LMTY 설정을 직접 적용합니다.
 
-## 0.3.1의 핵심
+## 0.3.x의 핵심
 
 프리팹 이름 하드코딩 목록이 없습니다.
 
@@ -46,6 +46,12 @@ LMTY는 `MonsterAI`가 이미 존재하므로 원래 `AnimalAI` 변환 경로를
 - `offspringPrefab` 지원 (`Seal -> Seal_Pup` 등)
 - 그 외에는 LMTY `SpawnMini()` 사용
 
+## 0.3.3 테이밍 타이머 초기화 수정
+
+Gale/Thunderstore 배포본 검증 중, 사슴이 이미 먹은 상태(`hungry=False`)인데도 `TameTimeLeft`가 생성되지 않아 `-1`로 남는 경우를 확인했습니다. 이전 버전은 이 상태에서 반환해 버려 네이티브 타이머 관찰과 fallback이 시작되지 않을 수 있었습니다.
+
+0.3.3은 **실제 `TameLastFeeding` 기록이 존재할 때만** 누락된 `TameTimeLeft`를 설정된 길들이기 시간으로 초기화합니다. 이후 6초 동안 네이티브 진행을 먼저 관찰하고, 실제로 멈춰 있을 때만 기존 fallback을 활성화합니다. 한 번도 먹지 않은 생물은 이 복구 경로로 초기화하지 않습니다.
+
 ## 최종 테스트 결과
 
 테스트 환경:
@@ -65,7 +71,8 @@ LMTY는 `MonsterAI`가 이미 존재하므로 원래 `AnimalAI` 변환 경로를
 - Seal 구조 자동 감지 및 `Seal_Pup` 연결 성공
 - Hatchling/Drake는 어댑터 개입 없이 원본 LMTY 경로로 길들이기/번식/알 낳기 성공
 - 3성 Hatchling 길들이기 성공
-- 최종 검증 로그에서 `NullReferenceException`, 일반 `Exception`, `[Error` 없음
+- v0.3.3에서 4성 Deer의 누락된 `TameTimeLeft`를 120초로 초기화한 뒤 6초 관찰 후 fallback이 정상 활성화되고, 120초 → 0초까지 감소하여 `tamed=True`로 길들이기 완료
+- 최종 v0.3.3 검증 로그에서 `NullReferenceException`, 일반 `Exception`, `[Error` 없음
 
 ## 설치
 

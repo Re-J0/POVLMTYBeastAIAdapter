@@ -5,7 +5,7 @@
 ```text
 GUID:    com.rehyun.povlmtybeastaiadapter
 Name:    POV LMTY BeastAI Adapter
-Version: 0.3.1
+Version: 0.3.3
 Target:  netstandard2.1
 ```
 
@@ -40,6 +40,8 @@ Searches are throttled and target-cached to avoid the performance issue observed
 ## Taming fallback
 
 The bridge watches `TameTimeLeft` after feeding. It first gives the game/LMTY native logic an opportunity to progress.
+
+If the creature is already fed but `TameTimeLeft` is absent, v0.3.3 initializes the missing countdown only when a valid `TameLastFeeding` timestamp exists. This avoids starting taming on never-fed creatures.
 
 Only after a six-second calm observation window with no progress does it invoke the fallback countdown path.
 

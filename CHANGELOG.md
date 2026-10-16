@@ -1,14 +1,23 @@
 # Changelog
 
-## 0.3.2 - Branding/icon update
+## 0.3.3 - Fed-state timer initialization fix
 
-- Replaced the project and Thunderstore package icon with a new custom emblem representing Deer/BeastAI compatibility and Hatchling/Drake support.
-- Bumped the Thunderstore package version to 0.3.2 so the new icon can be published as a new package version.
-- No gameplay, taming, breeding, AI, or compatibility logic changes from 0.3.1.
+Current stable release.
+
+- Fixed an adaptive-fallback dead state where a creature could be `hungry=False` while `TameTimeLeft` was still missing (`-1`).
+- If a valid `TameLastFeeding` timestamp exists but `TameTimeLeft` does not, the adapter now safely initializes the countdown from the configured taming time and starts the normal native-observation/fallback flow.
+- Never-fed creatures are not initialized: the repair requires a real feeding timestamp.
+- No changes to the generic POV structure detection, food list parsing, breeding configuration, or offspring logic.
+- Live validation confirmed a 4-star Deer progressed from the repaired 120-second countdown to `tamed=True`; the final log contained no `NullReferenceException`, general `Exception`, or `[Error` entry.
+
+## 0.3.2
+
+- Updated the project and Thunderstore icon with a new custom emblem.
+- Bumped package/plugin version to 0.3.2.
+- No gameplay or compatibility logic changes from 0.3.1.
+
 
 ## 0.3.1 - Generic compatibility + adaptive taming fallback
-
-Previous stable gameplay release.
 
 - Removed prefab-name dependency from the compatibility decision.
 - Retained high-confidence POV structural detection introduced in 0.3.0.

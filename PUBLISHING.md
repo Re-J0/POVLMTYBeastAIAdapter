@@ -19,22 +19,22 @@ Repository:
 https://github.com/Re-J0/POVLMTYBeastAIAdapter
 ```
 
-First release/tag:
+Current release/tag:
 
 ```text
-v0.3.1
+v0.3.3
 ```
 
 Recommended release assets:
 
 ```text
-POVLMTYBeastAIAdapter-0.3.1.dll
-POVLMTYBeastAIAdapter-0.3.1-Thunderstore.zip
-POVLMTYBeastAIAdapter-0.3.1-Nexus.zip
-POVLMTYBeastAIAdapter-0.3.1-Source.zip
+POVLMTYBeastAIAdapter-0.3.3.dll
+POVLMTYBeastAIAdapter-0.3.3-Thunderstore.zip
+POVLMTYBeastAIAdapter-0.3.3-Nexus.zip
+POVLMTYBeastAIAdapter-0.3.3-Source.zip
 ```
 
-Use `RELEASE_NOTES_0.3.1.md` as the first GitHub Release description.
+Use `RELEASE_NOTES_0.3.3.md` as the GitHub Release description.
 
 ## 3. Thunderstore and Gale
 
@@ -45,8 +45,8 @@ The Thunderstore package root must contain:
 ```text
 manifest.json
 README.md
-icon.png            # exactly 256x256 PNG
-CHANGELOG.md         # optional but included here
+icon.png
+CHANGELOG.md
 LICENSE
 plugins/
   POVLMTYBeastAIAdapter/
@@ -100,7 +100,7 @@ LICENSE
 On the Nexus mod page:
 
 - game: Valheim
-- main file: `POVLMTYBeastAIAdapter-0.3.1-Nexus.zip`
+- main file: `POVLMTYBeastAIAdapter-0.3.3-Nexus.zip`
 - required mods/resources: BepInExPack Valheim, PathOfValheiman, LetMeTameYou
 - do not upload copies of those dependencies inside your archive
 - use `NEXUS_DESCRIPTION.md` as the page description
@@ -109,7 +109,7 @@ On the Nexus mod page:
 
 ## 5. Version updates
 
-For a future `0.3.2`:
+For a future `0.3.4`:
 
 1. update `PluginVersion` in `Plugin.cs`;
 2. update `version_number` in `distribution/thunderstore/manifest.json`;

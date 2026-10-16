@@ -1,6 +1,6 @@
 # Development history and root-cause analysis
 
-This document records the problem diagnosis, failed approaches, fixes, and validation that led to v0.3.1.
+This document records the problem diagnosis, failed approaches, fixes, and validation that led from the original Deer-specific proof of concept through the current v0.3.3 release.
 
 ## 1. Original symptom
 
@@ -105,7 +105,7 @@ That led to v0.3.0's generic structural rule rather than a growing prefab allowl
 
 ## 9. Current high-confidence rule
 
-v0.3.1 auto-repairs only when:
+v0.3.x auto-repairs only when:
 
 ```text
 MonsterAI != null
@@ -189,3 +189,21 @@ At this point the adapter met the intended scope:
 - final validation produced no exception/error entries.
 
 Future changes should therefore be driven by a new reproducible failure rather than speculative expansion.
+
+## 14. v0.3.2 packaging/icon update
+
+v0.3.2 changed package branding and the public icon only. The runtime compatibility logic remained the validated v0.3.1 implementation.
+
+## 15. v0.3.3 missing `TameTimeLeft` regression found during distribution validation
+
+A clean Gale/Thunderstore-style test exposed a state not covered by the earlier validation: a repaired Deer could already report `hungry=False` while its ZDO had no `TameTimeLeft` entry, so reads returned `-1`. The adaptive fallback treated a missing timer as non-actionable and returned before starting its six-second observation window.
+
+The fix is intentionally conservative. When `TameTimeLeft` is missing, the adapter now checks for a real positive `TameLastFeeding` timestamp. Only then does it initialize the countdown from `Tameable.m_tamingTime`. It then follows the same native-observation and fallback decision path used before.
+
+Live validation with a 4-star Deer showed:
+
+- missing timer initialized to 120 seconds;
+- native timer remained stalled for the 6-second observation window;
+- fallback activated and reduced the countdown to 0;
+- Valheim completed taming and the adapter logged `tamed=True`;
+- no `NullReferenceException`, general `Exception`, or `[Error` entry was present in the final log.
