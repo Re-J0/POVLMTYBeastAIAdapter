@@ -4,7 +4,7 @@ A compatibility layer for **PathOfValheiman (POV)** and **LetMeTameYou (LMTY)** 
 
 The adapter fixes a specific interoperability problem where POV converts some normally passive `AnimalAI` creatures into its custom `PassiveTree.BeastAI`, while LMTY expects a different component layout when adding taming and breeding support.
 
-**Current stable version: 0.3.1**
+**Current package release: 0.3.2** — branding/icon update only. Gameplay and compatibility logic are unchanged from the validated **0.3.1** runtime build.
 
 ## What problem does this solve?
 
